@@ -1,0 +1,873 @@
+<html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NUELS EMPIRE — Electronics, Graphics & Coding School</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #f5c842;
+    --gold-dim: #c9a12e;
+    --blue-dark: #020c1b;
+    --blue-mid: #071a35;
+    --blue-glow: #0a2a5e;
+    --white: #ffffff;
+    --white-dim: rgba(255,255,255,0.75);
+    --green-main: #0d7a3e;
+    --green-light: #15a854;
+    --green-dark: #064d26;
+    --green-glow: #1dba60;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Outfit', sans-serif;
+    background: var(--blue-dark);
+    color: var(--white);
+    overflow-x: hidden;
+  }
+
+  #stars {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+  .star {
+    position: absolute;
+    background: white;
+    border-radius: 50%;
+    animation: twinkle var(--dur) ease-in-out infinite alternate;
+  }
+  @keyframes twinkle { from { opacity: 0.1; } to { opacity: 0.8; } }
+
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 5%;
+    background: rgba(2,12,27,0.85);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid rgba(245,200,66,0.2);
+  }
+  .nav-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(1.4rem, 3vw, 2rem);
+    letter-spacing: 3px;
+    color: var(--gold);
+    text-shadow: 0 0 20px rgba(245,200,66,0.5);
+  }
+  .nav-logo span { color: var(--white); }
+  .nav-btn {
+    background: var(--gold);
+    color: var(--blue-dark);
+    border: none;
+    padding: 10px 26px;
+    font-family: 'Outfit', sans-serif;
+    font-weight: 700;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+    border-radius: 4px;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: all 0.2s;
+    text-decoration: none;
+    display: inline-block;
+  }
+  .nav-btn:hover { background: var(--white); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(245,200,66,0.4); }
+
+  #page1 {
+    min-height: 100vh;
+    background: linear-gradient(145deg, #020c1b 0%, #071a35 50%, #020c1b 100%);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 100px 5% 60px;
+    overflow: hidden;
+  }
+  #page1::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(245,200,66,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(245,200,66,0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+    z-index: 0;
+  }
+
+  .hero-wrap {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    max-width: 900px;
+    width: 100%;
+  }
+  .badge {
+    display: inline-block;
+    background: rgba(245,200,66,0.12);
+    border: 1px solid rgba(245,200,66,0.4);
+    color: var(--gold);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 6px 18px;
+    border-radius: 20px;
+    margin-bottom: 24px;
+    animation: fadeDown 0.8s ease both;
+  }
+  .hero-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(3.5rem, 12vw, 9rem);
+    line-height: 0.92;
+    letter-spacing: 4px;
+    color: var(--white);
+    animation: fadeDown 0.9s ease 0.1s both;
+  }
+  .hero-title .gold { color: var(--gold); text-shadow: 0 0 40px rgba(245,200,66,0.6); }
+  .hero-sub {
+    font-size: clamp(1rem, 2.5vw, 1.3rem);
+    font-weight: 300;
+    color: var(--white-dim);
+    margin: 20px 0 40px;
+    line-height: 1.6;
+    animation: fadeDown 1s ease 0.2s both;
+  }
+
+  .price-block {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    background: rgba(245,200,66,0.08);
+    border: 2px solid var(--gold);
+    border-radius: 12px;
+    padding: 18px 40px;
+    margin-bottom: 40px;
+    animation: fadeDown 1s ease 0.3s both;
+    box-shadow: 0 0 40px rgba(245,200,66,0.15), inset 0 0 30px rgba(245,200,66,0.04);
+  }
+  .price-label { font-size: 0.75rem; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); font-weight: 600; }
+  .price-amount {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2.8rem, 8vw, 5rem);
+    color: var(--gold);
+    letter-spacing: 2px;
+    line-height: 1;
+    text-shadow: 0 0 30px rgba(245,200,66,0.5);
+  }
+  .price-note { font-size: 0.78rem; color: var(--white-dim); margin-top: 4px; }
+
+  .courses-row {
+    display: flex;
+    gap: 18px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 48px;
+    animation: fadeDown 1s ease 0.4s both;
+  }
+  .course-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 12px;
+    padding: 22px 24px;
+    width: clamp(150px, 28vw, 200px);
+    text-align: center;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+  .course-card::before {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    transform: scaleX(0);
+    transition: transform 0.3s;
+  }
+  .course-card:hover { border-color: var(--gold); transform: translateY(-6px); background: rgba(245,200,66,0.06); }
+  .course-card:hover::before { transform: scaleX(1); }
+  .course-icon { font-size: 2.2rem; margin-bottom: 10px; }
+  .course-title { font-size: 0.9rem; font-weight: 600; color: var(--white); margin-bottom: 5px; }
+  .course-desc { font-size: 0.72rem; color: var(--white-dim); line-height: 1.5; }
+
+  .cta-row {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+    animation: fadeDown 1s ease 0.5s both;
+  }
+  .btn-primary {
+    background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dim) 100%);
+    color: var(--blue-dark);
+    border: none;
+    padding: 16px 40px;
+    font-family: 'Outfit', sans-serif;
+    font-weight: 800;
+    font-size: 1rem;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.25s;
+    text-decoration: none;
+    display: inline-block;
+    box-shadow: 0 8px 30px rgba(245,200,66,0.35);
+  }
+  .btn-primary:hover { transform: translateY(-3px) scale(1.03); box-shadow: 0 14px 40px rgba(245,200,66,0.5); }
+  .btn-pay {
+    background: transparent;
+    color: var(--gold);
+    border: 2px solid var(--gold);
+    padding: 16px 40px;
+    font-family: 'Outfit', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.25s;
+    text-decoration: none;
+    display: inline-block;
+  }
+  .btn-pay:hover { background: rgba(245,200,66,0.1); transform: translateY(-3px); box-shadow: 0 8px 30px rgba(245,200,66,0.2); }
+
+  .about-strip {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 900px;
+    margin-top: 70px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 16px;
+    padding: 36px 40px;
+    animation: fadeUp 1s ease 0.6s both;
+  }
+  .about-strip h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    letter-spacing: 3px;
+    color: var(--gold);
+    margin-bottom: 16px;
+  }
+  .about-strip p {
+    font-size: clamp(0.88rem, 2vw, 1rem);
+    color: var(--white-dim);
+    line-height: 1.8;
+  }
+  .about-strip p + p { margin-top: 12px; }
+
+  .stats-bar {
+    display: flex;
+    gap: 0;
+    flex-wrap: wrap;
+    margin-top: 32px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    padding-top: 28px;
+  }
+  .stat {
+    flex: 1;
+    min-width: 120px;
+    text-align: center;
+    padding: 0 16px;
+    border-right: 1px solid rgba(255,255,255,0.08);
+  }
+  .stat:last-child { border-right: none; }
+  .stat-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.4rem;
+    color: var(--gold);
+    letter-spacing: 2px;
+    line-height: 1;
+  }
+  .stat-text { font-size: 0.75rem; color: var(--white-dim); margin-top: 4px; letter-spacing: 1px; text-transform: uppercase; }
+
+  .scroll-hint {
+    position: absolute;
+    bottom: 28px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    color: var(--white-dim);
+    font-size: 0.7rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    z-index: 2;
+    animation: bounce 2s infinite;
+  }
+  .scroll-line {
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(to bottom, var(--gold), transparent);
+  }
+  @keyframes bounce { 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(8px)} }
+
+  #page2 {
+    min-height: 100vh;
+    background: linear-gradient(160deg, #064d26 0%, #0d7a3e 40%, #064d26 100%);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 80px 5% 60px;
+  }
+  #page2::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+    background-size: 50px 50px;
+    z-index: 0;
+  }
+  #page2::after {
+    content: '';
+    position: absolute;
+    top: -100px; right: -100px;
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(29,186,96,0.25) 0%, transparent 70%);
+    z-index: 0;
+  }
+  .pay-orb {
+    position: absolute;
+    bottom: -80px; left: -80px;
+    width: 350px; height: 350px;
+    background: radial-gradient(circle, rgba(29,186,96,0.2) 0%, transparent 70%);
+    z-index: 0;
+  }
+
+  .pay-wrap {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 820px;
+  }
+  .pay-header { text-align: center; margin-bottom: 50px; }
+  .pay-header .badge-green {
+    display: inline-block;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.3);
+    color: #a8f5c8;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 6px 18px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+  }
+  .pay-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2.8rem, 8vw, 5.5rem);
+    letter-spacing: 4px;
+    line-height: 0.95;
+    color: var(--white);
+  }
+  .pay-title .highlight { color: #a8f5c8; }
+  .pay-subtitle {
+    font-size: clamp(0.9rem, 2vw, 1.1rem);
+    color: rgba(255,255,255,0.75);
+    margin-top: 16px;
+    line-height: 1.6;
+  }
+
+  .pay-card {
+    background: rgba(0,0,0,0.3);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 20px;
+    padding: 44px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 30px 80px rgba(0,0,0,0.4);
+  }
+  .pay-amount-banner {
+    background: linear-gradient(135deg, rgba(29,186,96,0.3), rgba(6,77,38,0.3));
+    border: 2px solid rgba(29,186,96,0.5);
+    border-radius: 12px;
+    padding: 22px;
+    text-align: center;
+    margin-bottom: 36px;
+  }
+  .pay-amount-banner .label { font-size: 0.72rem; letter-spacing: 3px; text-transform: uppercase; color: #a8f5c8; font-weight: 600; }
+  .pay-amount-banner .big-amt {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2.5rem, 7vw, 4.5rem);
+    color: #ffffff;
+    letter-spacing: 3px;
+    text-shadow: 0 0 30px rgba(29,186,96,0.6);
+    line-height: 1;
+  }
+  .pay-amount-banner .sub { font-size: 0.8rem; color: rgba(255,255,255,0.6); margin-top: 4px; }
+
+  .bank-section h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.4rem;
+    letter-spacing: 3px;
+    color: #a8f5c8;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .bank-section h3::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, rgba(168,245,200,0.4), transparent);
+  }
+  .bank-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+  @media(max-width:580px) { .bank-grid { grid-template-columns: 1fr; } }
+  .bank-item {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 10px;
+    padding: 18px 20px;
+    transition: border-color 0.2s;
+  }
+  .bank-item:hover { border-color: rgba(29,186,96,0.5); }
+  .bank-item .item-label {
+    font-size: 0.68rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.45);
+    margin-bottom: 6px;
+    font-weight: 600;
+  }
+  .bank-item .item-val {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--white);
+    letter-spacing: 1px;
+  }
+  .bank-item .item-val.accent { color: #a8f5c8; font-size: 1.2rem; letter-spacing: 3px; }
+
+  .steps-section { margin-bottom: 32px; }
+  .steps-section h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.4rem;
+    letter-spacing: 3px;
+    color: #a8f5c8;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .steps-section h3::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, rgba(168,245,200,0.4), transparent);
+  }
+  .steps-list { display: flex; flex-direction: column; gap: 14px; }
+  .step-row { display: flex; align-items: flex-start; gap: 16px; }
+  .step-num {
+    flex-shrink: 0;
+    width: 34px; height: 34px;
+    background: linear-gradient(135deg, #15a854, #1dba60);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 0.85rem;
+    box-shadow: 0 4px 14px rgba(29,186,96,0.4);
+  }
+  .step-text { font-size: 0.92rem; color: rgba(255,255,255,0.8); line-height: 1.6; padding-top: 5px; }
+  .step-text strong { color: white; }
+
+  .form-section h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.4rem;
+    letter-spacing: 3px;
+    color: #a8f5c8;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .form-section h3::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, rgba(168,245,200,0.4), transparent);
+  }
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 14px;
+  }
+  @media(max-width:580px) { .form-grid { grid-template-columns: 1fr; } }
+  .form-field { display: flex; flex-direction: column; gap: 6px; }
+  .form-field label {
+    font-size: 0.72rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.5);
+    font-weight: 600;
+  }
+  .form-field input, .form-field select, .form-field textarea {
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 8px;
+    padding: 13px 16px;
+    color: white;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.92rem;
+    outline: none;
+    transition: border-color 0.2s, background 0.2s;
+    width: 100%;
+  }
+  .form-field input::placeholder, .form-field textarea::placeholder { color: rgba(255,255,255,0.3); }
+  .form-field input:focus, .form-field select:focus, .form-field textarea:focus {
+    border-color: #1dba60;
+    background: rgba(29,186,96,0.08);
+  }
+  .form-field select option { background: #064d26; color: white; }
+  .form-full { grid-column: 1 / -1; }
+
+  .submit-row { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 6px; }
+  .btn-enroll {
+    flex: 1;
+    min-width: 200px;
+    background: linear-gradient(135deg, #1dba60 0%, #15a854 100%);
+    color: white;
+    border: none;
+    padding: 16px 32px;
+    font-family: 'Outfit', sans-serif;
+    font-weight: 800;
+    font-size: 1rem;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.25s;
+    box-shadow: 0 8px 30px rgba(29,186,96,0.4);
+  }
+  .btn-enroll:hover { transform: translateY(-3px); box-shadow: 0 14px 40px rgba(29,186,96,0.55); }
+  .btn-pay-now {
+    flex: 1;
+    min-width: 200px;
+    background: transparent;
+    color: #a8f5c8;
+    border: 2px solid rgba(168,245,200,0.5);
+    padding: 16px 32px;
+    font-family: 'Outfit', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.25s;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  .btn-pay-now:hover { background: rgba(168,245,200,0.1); border-color: #a8f5c8; transform: translateY(-3px); }
+
+  #toast {
+    position: fixed;
+    bottom: 30px; right: 30px;
+    background: #0d7a3e;
+    color: white;
+    padding: 16px 24px;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+    transform: translateY(100px);
+    opacity: 0;
+    transition: all 0.4s cubic-bezier(.34,1.56,.64,1);
+    z-index: 999;
+    border-left: 4px solid #1dba60;
+  }
+  #toast.show { transform: translateY(0); opacity: 1; }
+
+  footer {
+    background: #010a15;
+    text-align: center;
+    padding: 28px 5%;
+    color: rgba(255,255,255,0.35);
+    font-size: 0.78rem;
+    letter-spacing: 1px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+  }
+  footer span { color: var(--gold); }
+
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media(max-width:600px) {
+    .pay-card { padding: 28px 22px; }
+    .about-strip { padding: 28px 22px; }
+    .stat { min-width: 90px; }
+    nav { padding: 14px 4%; }
+    .nav-btn { padding: 8px 16px; font-size: 0.8rem; }
+  }
+</style>
+</head>
+<body>
+
+<div id="stars"></div>
+
+<nav>
+  <div class="nav-logo">NUELS <span>EMPIRE</span></div>
+  <a href="#page2" class="nav-btn">💳 Pay Now</a>
+</nav>
+
+<!-- PAGE 1 -->
+<section id="page1">
+  <div class="hero-wrap">
+    <div class="badge">🎓 Enroll Now — Seats Are Limited</div>
+    <h1 class="hero-title">NUELS<br><span class="gold">EMPIRE</span></h1>
+    <p class="hero-sub">
+      Master Electronics Repair · Graphics Design · Coding &amp; Programming<br>
+      Build Real Skills. Build a Real Career.
+    </p>
+    <div class="price-block">
+      <div class="price-label">Tuition Fee — One-Time Payment</div>
+      <div class="price-amount">₦50,000</div>
+      <div class="price-note">Full program access · No hidden charges</div>
+    </div>
+    <div class="courses-row">
+      <div class="course-card">
+        <div class="course-icon">⚡</div>
+        <div class="course-title">Electronics Basics</div>
+        <div class="course-desc">Learn circuits, components, and how electronics really work from scratch.</div>
+      </div>
+      <div class="course-card">
+        <div class="course-icon">🔧</div>
+        <div class="course-title">Device Repair</div>
+        <div class="course-desc">Diagnose and fix phones, laptops, TVs, and more with professional techniques.</div>
+      </div>
+      <div class="course-card">
+        <div class="course-icon">🎨</div>
+        <div class="course-title">Graphics Design</div>
+        <div class="course-desc">Create stunning visuals, logos, posters, and brand identities.</div>
+      </div>
+      <div class="course-card">
+        <div class="course-icon">💻</div>
+        <div class="course-title">Coding</div>
+        <div class="course-desc">Build websites and apps using modern programming languages and tools.</div>
+      </div>
+    </div>
+    <div class="cta-row">
+      <a href="#page2" class="btn-primary">🎓 Apply to Enroll</a>
+      <a href="#page2" class="btn-pay">💳 Payment Details</a>
+    </div>
+  </div>
+
+  <div class="about-strip">
+    <h2>ABOUT THE PROGRAM</h2>
+    <p><strong>NUELS EMPIRE</strong> is a hands-on training school designed to give you practical, job-ready skills in the most in-demand fields of technology. Whether you are a beginner with zero experience or someone looking to upgrade their knowledge, our curriculum is built to take you from basics to brilliance.</p>
+    <p>Our instructors are working professionals who combine theory with real workshop practice. You will leave this program able to repair electronic devices, design professional graphics, and write functional code — skills that translate directly to income.</p>
+    <p>Enrollment is open to anyone 15 years and above. Classes are structured, supportive, and community-driven. Join hundreds of students who have transformed their futures through NUELS EMPIRE.</p>
+    <div class="stats-bar">
+      <div class="stat"><div class="stat-num">500+</div><div class="stat-text">Students Trained</div></div>
+      <div class="stat"><div class="stat-num">4</div><div class="stat-text">Courses Included</div></div>
+      <div class="stat"><div class="stat-num">3</div><div class="stat-text">Months Duration</div></div>
+      <div class="stat"><div class="stat-num">100%</div><div class="stat-text">Hands-On Learning</div></div>
+    </div>
+  </div>
+
+  <div class="scroll-hint">
+    <span>Make Payment</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- PAGE 2 -->
+<section id="page2">
+  <div class="pay-orb"></div>
+  <div class="pay-wrap">
+    <div class="pay-header">
+      <div class="badge-green">💳 Secure Payment Portal</div>
+      <h2 class="pay-title">MAKE YOUR<br><span class="highlight">PAYMENT</span></h2>
+      <p class="pay-subtitle">Transfer your tuition fee directly to our account below and complete the enrollment form to secure your spot.</p>
+    </div>
+    <div class="pay-card">
+      <div class="pay-amount-banner">
+        <div class="label">Amount to Transfer</div>
+        <div class="big-amt">₦50,000</div>
+        <div class="sub">One-time payment · Full program access included</div>
+      </div>
+
+      <div class="bank-section">
+        <h3>BANK DETAILS</h3>
+        <div class="bank-grid">
+          <div class="bank-item">
+            <div class="item-label">Account Name</div>
+            <div class="item-val">NUELS EMPIRE</div>
+          </div>
+          <div class="bank-item">
+            <div class="item-label">Account Number</div>
+            <div class="item-val accent">8032252457</div>
+          </div>
+          <div class="bank-item">
+            <div class="item-label">Bank Name</div>
+            <div class="item-val">OPay / Any Nigerian Bank</div>
+          </div>
+          <div class="bank-item">
+            <div class="item-label">Amount</div>
+            <div class="item-val">₦50,000 (Fifty Thousand Naira)</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="steps-section">
+        <h3>HOW TO PAY</h3>
+        <div class="steps-list">
+          <div class="step-row">
+            <div class="step-num">1</div>
+            <div class="step-text">Open your <strong>mobile banking or USSD app</strong> (OPay, Kuda, GTBank, Access, etc.)</div>
+          </div>
+          <div class="step-row">
+            <div class="step-num">2</div>
+            <div class="step-text">Select <strong>Transfer</strong> and enter account number <strong>8032252457</strong></div>
+          </div>
+          <div class="step-row">
+            <div class="step-num">3</div>
+            <div class="step-text">Enter the amount <strong>₦50,000</strong> and use <strong>your full name</strong> as the narration</div>
+          </div>
+          <div class="step-row">
+            <div class="step-num">4</div>
+            <div class="step-text">Confirm the transfer and <strong>save your receipt / screenshot</strong></div>
+          </div>
+          <div class="step-row">
+            <div class="step-num">5</div>
+            <div class="step-text">Fill in the enrollment form below, then click <strong>"Submit Enrollment"</strong> to complete registration</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h3>ENROLLMENT FORM</h3>
+        <div class="form-grid">
+          <div class="form-field">
+            <label>First Name</label>
+            <input type="text" placeholder="Enter your first name" id="fname">
+          </div>
+          <div class="form-field">
+            <label>Last Name</label>
+            <input type="text" placeholder="Enter your last name" id="lname">
+          </div>
+          <div class="form-field">
+            <label>Phone Number</label>
+            <input type="tel" placeholder="e.g. 08012345678" id="phone">
+          </div>
+          <div class="form-field">
+            <label>Email Address</label>
+            <input type="email" placeholder="your@email.com" id="email">
+          </div>
+          <div class="form-field">
+            <label>Course(s) of Interest</label>
+            <select id="course">
+              <option value="">— Select a course —</option>
+              <option>Electronics Basics</option>
+              <option>Electronics Repair</option>
+              <option>Graphics Design</option>
+              <option>Coding & Programming</option>
+              <option>All Courses (Full Package)</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <label>Transfer Reference / Proof</label>
+            <input type="text" placeholder="Last 6 digits of transaction ID" id="ref">
+          </div>
+          <div class="form-field form-full">
+            <label>Message (Optional)</label>
+            <textarea rows="3" placeholder="Any questions or additional information..." id="msg"></textarea>
+          </div>
+        </div>
+        <div class="submit-row">
+          <button class="btn-enroll" onclick="submitForm()">✅ Submit Enrollment</button>
+          <a href="https://wa.me/2348032252457?text=Hello%2C%20I%20want%20to%20enroll%20at%20NUELS%20EMPIRE.%20I%20have%20made%20the%20payment%20of%20%E2%82%A650%2C000." target="_blank" class="btn-pay-now">📲 Confirm via WhatsApp</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  &copy; 2025 <span>NUELS EMPIRE</span> · All Rights Reserved · Electronics · Graphics · Coding
+</footer>
+
+<div id="toast">✅ Enrollment submitted! We'll contact you soon.</div>
+
+<script>
+  (function(){
+    const container = document.getElementById('stars');
+    for(let i=0;i<120;i++){
+      const s = document.createElement('div');
+      s.className = 'star';
+      const size = Math.random()*2.5+0.5;
+      s.style.cssText = `
+        width:${size}px;height:${size}px;
+        top:${Math.random()*100}%;
+        left:${Math.random()*100}%;
+        --dur:${(Math.random()*3+2).toFixed(1)}s;
+        animation-delay:${(Math.random()*4).toFixed(1)}s;
+      `;
+      container.appendChild(s);
+    }
+  })();
+
+  function submitForm(){
+    const fname = document.getElementById('fname').value.trim();
+    const lname = document.getElementById('lname').value.trim();
+    const phone = document.getElementById('phone').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const course = document.getElementById('course').value;
+    const ref = document.getElementById('ref').value.trim();
+
+    if(!fname||!lname||!phone||!email||!course||!ref){
+      alert('Please fill in all required fields before submitting.');
+      return;
+    }
+
+    const toast = document.getElementById('toast');
+    toast.textContent = `🎉 Welcome, ${fname}! Your enrollment has been received.`;
+    toast.classList.add('show');
+    setTimeout(()=>toast.classList.remove('show'), 5000);
+
+    ['fname','lname','phone','email','ref','msg'].forEach(id=>{
+      document.getElementById(id).value='';
+    });
+    document.getElementById('course').value='';
+  }
+</script>
+</body>
+</html>
